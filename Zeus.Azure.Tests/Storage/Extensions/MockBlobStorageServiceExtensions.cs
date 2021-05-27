@@ -1,4 +1,4 @@
-using Zeus.Azure.Storage;
+﻿using Zeus.Azure.Storage;
 using Moq;
 using Moq.Language.Flow;
 using System;
@@ -8,13 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Zeus.Azure.Framework
+namespace Zeus.Azure
 {
     public static class MockBlobStorageServiceExtensions
     {
         public static void SetupUploadBlob(this Mock<IBlobStorageService> mockBlobStorageService, Stream sourceStream, string outputFilename, bool replace = false, bool createContainerIfNoneExists = true, bool shouldFail = false)
         {
-            if(!shouldFail)
+            if (!shouldFail)
             {
                 var uploadedResultContext = new UploadedBlobContext()
                 {
@@ -35,7 +35,7 @@ namespace Zeus.Azure.Framework
                 mockBlobStorageService.Setup(mock => mock.UploadFileToContainerAsync(
                     It.Is<Stream>(s => s == sourceStream),
                     It.Is<string>(s => s == outputFilename),
-                    It.Is<bool>(r => r == replace), 
+                    It.Is<bool>(r => r == replace),
                     It.Is<bool>(b => b == createContainerIfNoneExists)
                 ))
                 .Throws(new Exception("Test Error"));
@@ -169,7 +169,7 @@ namespace Zeus.Azure.Framework
 
         public static void SetupDeleteBlob(this Mock<IBlobStorageService> mockBlobStorageService, string blobName, bool blobExists = true)
         {
-            if(blobExists)
+            if (blobExists)
             {
                 mockBlobStorageService.Setup(mock => mock.DeleteBlob(It.Is<string>(s => s == blobName)))
                     .Returns(Task.FromResult(0));
